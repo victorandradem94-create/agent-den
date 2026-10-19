@@ -13,6 +13,24 @@ real y dos piezas pequeñas de código: un **generador seguro de unidades
 systemd** y un **Guardian de rotación de tokens que falla cerrado**. Nació como
 *Osito Cloud Migrator*; `agentden` es el nombre genérico.
 
+## El recorrido
+
+Terminal en macOS → LaunchAgents de **launchd** (`KeepAlive`) más un
+supervisor de tokens, *Slack Token Guardian* (`StartInterval`) → Ubuntu en la
+nube con **servicios systemd de usuario**, `loginctl enable-linger` y un timer
+`OnCalendar`. Detalles en el [caso de estudio](docs/case-study.md).
+
+| macOS (launchd) | Ubuntu (systemd) |
+| --- | --- |
+| `KeepAlive` in a LaunchAgent plist | `Restart=on-failure` |
+| `StartInterval` (Guardian) | `.timer` con `OnCalendar=*:0/5` |
+| `~/Library/LaunchAgents/` | `~/.config/systemd/user/` |
+| `launchctl` | `systemctl --user` |
+| corre mientras la sesión del usuario está abierta | `loginctl enable-linger` |
+
+Quedó un residuo: un comentario/bucle "wait for launchd" sobrevivió a la
+migración; la v0.2 lo elimina.
+
 ## Estado / qué está verificado
 
 | Afirmación | Estado |

@@ -1,8 +1,25 @@
 # Case study: four Slack agents from a laptop to a free VM
 
-## Before
-Four Python agents (Dudu, Bubu, Kuro, Mimi) ran from Terminal windows on a
-MacBook Air. Closing the lid meant the team went offline.
+## The journey
+1. **Terminal on macOS.** Four Python agents (Dudu, Bubu, Kuro, Mimi) started
+   by hand from Terminal on a MacBook Air.
+2. **launchd on macOS.** Each agent became a LaunchAgent (plist with
+   `KeepAlive`), plus a token supervisor, *Slack Token Guardian*, run
+   periodically via `StartInterval`.
+3. **systemd on Ubuntu (cloud).** For the move to Oracle Cloud, launchd was
+   replaced by `systemd --user` services, `loginctl enable-linger`, and a
+   systemd timer (`OnCalendar`) instead of `StartInterval`.
+
+| macOS (launchd) | Ubuntu (systemd) |
+| --- | --- |
+| `KeepAlive` in a LaunchAgent plist | `Restart=on-failure` |
+| `StartInterval` (Guardian) | `.timer` with `OnCalendar=*:0/5` |
+| `~/Library/LaunchAgents/` | `~/.config/systemd/user/` |
+| `launchctl` | `systemctl --user` |
+| runs while the user is logged in | `loginctl enable-linger` |
+
+One leftover: a "wait for launchd" comment and sleep loop survived in the
+Guardian after the move to Linux (fixed in v0.2, see [guardian-review](guardian-review.md)).
 
 ## After
 - Oracle Cloud `VM.Standard.A1.Flex`, 2 OCPU / 12 GB, Ubuntu 24.04 LTS ARM64.

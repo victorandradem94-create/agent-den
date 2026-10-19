@@ -13,6 +13,23 @@ two small pieces of code I wish I'd had: a **safe systemd unit generator**
 and a **fail-closed token-rotation Guardian**. It started life as
 *Osito Cloud Migrator*; `agentden` is the generic name.
 
+## The journey
+
+Terminal on macOS → **launchd** LaunchAgents (`KeepAlive`) plus a token
+supervisor, *Slack Token Guardian* (`StartInterval`) → Ubuntu in the cloud
+with **systemd user services**, `loginctl enable-linger` and an `OnCalendar`
+timer. Details in the [case study](docs/case-study.md).
+
+| macOS (launchd) | Ubuntu (systemd) |
+| --- | --- |
+| `KeepAlive` in a LaunchAgent plist | `Restart=on-failure` |
+| `StartInterval` (Guardian) | `.timer` with `OnCalendar=*:0/5` |
+| `~/Library/LaunchAgents/` | `~/.config/systemd/user/` |
+| `launchctl` | `systemctl --user` |
+| runs while the user is logged in | `loginctl enable-linger` |
+
+A leftover "wait for launchd" comment/loop survived the port; v0.2 removes it.
+
 ## Status / what is verified
 
 | Claim | Status |
