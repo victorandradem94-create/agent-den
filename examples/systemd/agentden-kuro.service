@@ -1,0 +1,15 @@
+[Unit]
+Description=agentden agent - kuro
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ubuntu/agent-team
+ExecStart=/home/ubuntu/agent-team/.venv/bin/python /home/ubuntu/agent-team/kuro_bot.py
+Restart=on-failure
+RestartSec=10
+UMask=0077
+
+[Install]
+WantedBy=default.target

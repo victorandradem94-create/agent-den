@@ -1,0 +1,19 @@
+{
+  "project_name": "agent-team",
+  "remote_user": "ubuntu",
+  "remote_directory": "/home/ubuntu/agent-team",
+  "python_path": "/home/ubuntu/agent-team/.venv/bin/python",
+  "agents": [
+    {"name": "dudu", "entrypoint": "dudu_bot.py"},
+    {"name": "bubu", "entrypoint": "bubu_bot.py"},
+    {"name": "kuro", "entrypoint": "kuro_bot.py"},
+    {"name": "mimi", "entrypoint": "mimi_bot.py"}
+  ],
+  "guardian": {"enabled": true, "entrypoint": "guardian_entry.py", "interval_minutes": 5, "real_operations": false},
+  "guardian_runtime": {
+    "state_dir": "/home/ubuntu/agent-team",
+    "env_file": "/home/ubuntu/agent-team/.env",
+    "agents": ["kuro", "mimi"],
+    "rotator": "slack"
+  }
+}

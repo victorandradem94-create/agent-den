@@ -1,0 +1,13 @@
+[Unit]
+Description=agentden Guardian (dry run unless enabled by hand)
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/ubuntu/agent-team
+ExecStart=/home/ubuntu/agent-team/.venv/bin/python /home/ubuntu/agent-team/guardian_entry.py
+# 0 = ok/wait. 5 = restart pending, 6 = due (dry run): expected, not failures.
+# 1 error, 3 blocked, 4 uncertain -> unit fails so OnFailure=/journal shows it.
+SuccessExitStatus=5 6
+TimeoutStartSec=120
+UMask=0077

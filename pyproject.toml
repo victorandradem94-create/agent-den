@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentden"
+version = "0.2.0"
+description = "Notes and small, fail-closed tools for running a few Python agents on one VM with systemd."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Víctor Andrade"}]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Victorandrade94/agent-den"
+
+[project.scripts]
+agentden = "agentden.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

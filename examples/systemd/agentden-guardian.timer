@@ -1,0 +1,12 @@
+[Unit]
+Description=agentden Guardian timer - every 5 minutes
+
+[Timer]
+# OnCalendar, not OnBootSec+OnUnitActiveSec: the latter never re-armed for us.
+OnCalendar=*:0/5
+AccuracySec=30s
+Persistent=true
+Unit=agentden-guardian.service
+
+[Install]
+WantedBy=timers.target

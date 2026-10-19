@@ -1,0 +1,17 @@
+# secrets and runtime state — never commit
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+.token_*
+.guardian_*
+agentden.json
+# python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+build/
+dist/
+generated/
